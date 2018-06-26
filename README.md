@@ -6,7 +6,7 @@
 
 ```
 npm install ringcentral --save
-npm install ringcentral-client --save
+npm install https://github.com/embbnux/ringcentral-js-client.git#feature/429 --save
 npm install https://github.com/embbnux/ringcentral-js-rate-limit.git
 ```
 

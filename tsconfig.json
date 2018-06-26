@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "lib": [
+            "es5",
+            "es6",
+            "es7",
+            "dom"
+        ],
+        "sourceMap": true
+    },
+    "files": ["index.ts"],
+    "compileOnSave": true
+}

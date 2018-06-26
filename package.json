@@ -1,0 +1,19 @@
+{
+  "name": "ringcentral-rate-limit",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Embbnux Ji",
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "ringcentral": "^3.2.0",
+    "uuid": "^3.2.1"
+  }
+}

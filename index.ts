@@ -16,7 +16,7 @@ function rateLimit(sdk: RingCentral) {
     if (!rateLimitRemaining) {
       return 5;
     }
-    const maxConcurrencyCount = Math.floor(rateLimitRemaining.limit / 3);
+    const maxConcurrencyCount = Math.floor(rateLimitRemaining.limit / 4);
     if (maxConcurrencyCount < 1) {
       return 1;
     }
@@ -43,9 +43,9 @@ function rateLimit(sdk: RingCentral) {
 
   const updateRateLimitRemaining = (apiGroup: string, headers: any) => {
     const newRemaining = {
-      remaining: parseInt(headers.get('X-Rate-Limit-Remaining'), 10) / 2 * 0.5,
+      remaining: parseInt(headers.get('X-Rate-Limit-Remaining'), 10),
       timeWindow: parseInt(headers.get('X-Rate-Limit-Window'), 10),
-      limit: parseInt(headers.get('X-Rate-Limit-Limit'), 10) / 2,
+      limit: parseInt(headers.get('X-Rate-Limit-Limit'), 10),
       timestamp: Date.now(),
     };
     const oldRemaining = rateLimitRemainings[apiGroup];
@@ -70,7 +70,8 @@ function rateLimit(sdk: RingCentral) {
     const rateLimitRemaining = rateLimitRemainings[apiGroup];
     if (
       !rateLimitRemaining ||
-      rateLimitRemaining.remaining > Object.keys(requestingStore).length ||
+      rateLimitRemaining.remaining > Object.keys(requestingStore).length + 1 ||
+      Date.now() > (rateLimitRemaining.timstamp + (60 * 1000)) ||
       force
     ) {
       const waitingRequest = waitingRequestQueues[apiGroup].shift();

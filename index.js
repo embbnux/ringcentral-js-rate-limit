@@ -15,7 +15,7 @@ function rateLimit(sdk) {
         if (!rateLimitRemaining) {
             return 5;
         }
-        var maxConcurrencyCount = Math.floor(rateLimitRemaining.limit / 3);
+        var maxConcurrencyCount = Math.floor(rateLimitRemaining.limit / 4);
         if (maxConcurrencyCount < 1) {
             return 1;
         }
@@ -40,9 +40,9 @@ function rateLimit(sdk) {
     };
     var updateRateLimitRemaining = function (apiGroup, headers) {
         var newRemaining = {
-            remaining: parseInt(headers.get('X-Rate-Limit-Remaining'), 10) / 2 * 0.5,
+            remaining: parseInt(headers.get('X-Rate-Limit-Remaining'), 10),
             timeWindow: parseInt(headers.get('X-Rate-Limit-Window'), 10),
-            limit: parseInt(headers.get('X-Rate-Limit-Limit'), 10) / 2,
+            limit: parseInt(headers.get('X-Rate-Limit-Limit'), 10),
             timestamp: Date.now(),
         };
         var oldRemaining = rateLimitRemainings[apiGroup];
@@ -63,7 +63,8 @@ function rateLimit(sdk) {
         }
         var rateLimitRemaining = rateLimitRemainings[apiGroup];
         if (!rateLimitRemaining ||
-            rateLimitRemaining.remaining > Object.keys(requestingStore).length ||
+            rateLimitRemaining.remaining > Object.keys(requestingStore).length + 1 ||
+            Date.now() > (rateLimitRemaining.timstamp + (60 * 1000)) ||
             force) {
             var waitingRequest = waitingRequestQueues[apiGroup].shift();
             var requestId = uuid.v4();
